@@ -1,9 +1,10 @@
-function [hr_diff, hr_std] = calc_heart_rate(data, ...
-    t_index, is_reversed, number_of_scene)
+function [hr_diff, hr_std] = calc_heart_rate(data, data_index, ...
+    t_index, is_reversed, number_of_scene, sampling_rate)
 % calc_heart_rate           Calculate difference and standard deviation of
 %                           heart rate from ECG raw data
 %  Parameters
 %       data                ECG data to analysis
+%       data_index          Index of ECG in raw data
 %       t_index             Information for time of scenes
 %       is_reversed         True if reversed due to bad electrode attachment
 %       number_of_scene     Number of scene in video clip
@@ -17,16 +18,16 @@ function [hr_diff, hr_std] = calc_heart_rate(data, ...
 
     for n = 1:number_of_scene
 		% Initialize initial paramters
-		min_peak_distance = 450;
+		min_peak_distance = sampling_rate*0.45;
         default_rate = 0.45;
         order = 6;
 
 		% Repeat calculate heart rate until analysis is done properly
         while min_peak_distance
-            i_s = int32(t_index(2*n - 1) * 1000);
-            i_f = int32(t_index(2*n) * 1000);
+            i_s = int32(t_index(2*n - 1) * sampling_rate);
+            i_f = int32(t_index(2*n) * sampling_rate);
 
-            noisyECG_withTrend = data(i_s:i_f, 3);
+            noisyECG_withTrend = data(i_s:i_f, data_index);
 
             if is_reversed
                 noisyECG_withTrend = (-1)*noisyECG_withTrend;
@@ -87,7 +88,7 @@ function [hr_diff, hr_std] = calc_heart_rate(data, ...
                     input('Enter the MinPeakDistance (0 for next): ');
                 if min_peak_distance
                     default_rate = input('Enter the rate (used for MinPeakHeight): ');
-                    order = input('Enter the order of equation:')
+                    order = input('Enter the order of equation:');
                 end
             catch
                 disp('Invalid file. Assign NaN (Not a Number)');

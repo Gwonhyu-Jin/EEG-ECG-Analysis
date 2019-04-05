@@ -11,10 +11,6 @@ function [result_1, result_2, freq] = ...
 %       result_1        Power spectrum of channel 1 data
 %       reulst_2        Power spectrum of channel 2 data
 %       freq            Frequency information about power spectrum
-
-    if n == 0
-        n = 2000;
-    end
     
     y1 = fft(x_1, n);       % DFT
     y2 = fft(x_2, n);

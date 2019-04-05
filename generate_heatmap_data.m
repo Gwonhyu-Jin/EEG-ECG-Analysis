@@ -12,16 +12,18 @@ function [result_1, result_2, freq] = generate_heatmap_data(data, ...
 %       t_end                   The moment that video was ended
 %       channel_1               Index for channel 1 data
 %       channel_2               Index for channel 2 data
-%       number_of_time_frame    Num
-%       number_of_freq_frame    Num
+%       number_of_time_frame    Number of time frame (column)
+%       number_of_freq_frame    Number of frequency frame (row)
 %  Returns
 %       result_1                Heatmap data of EEG data (channel 1)
 %       result_2                Heatmap data of EEG data (channel 2)
 %       freq					Frequency information for power spectrum	
     clear power_1_int power_2_int;
 
-%     number_of_time_frame = 108*4;
-%     number_of_freq_frame = 181;
+    % If you want to modify frequency resolution for heatmap analysis, 
+    % please modify this variable
+    n = 2000;
+    
     
     result_1 = zeros(number_of_time_frame, number_of_freq_frame);
     result_2 = zeros(number_of_time_frame, number_of_freq_frame);
@@ -34,7 +36,7 @@ function [result_1, result_2, freq] = generate_heatmap_data(data, ...
         x_2 = data(i_s:i_f, channel_2); % gamma_2
         
         [temp1, temp2, freq] = power_spectrum(x_1, x_2, sampling_rate, ...
-            min_frq, max_frq, 0);
+            min_frq, max_frq, n);
 
         result_1(t, :) = temp1 ./ trapz(freq, temp1);
         result_2(t, :) = temp2 ./ trapz(freq, temp2);

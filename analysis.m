@@ -33,6 +33,12 @@ time_frame_end = (10250:250:118000);
 number_of_time_frame = 108*4;
 number_of_freq_frame = 90*2+1;
 frequency_interval = 0.5;   % Frequency resolution for heatmap analysis
+
+% Data index information
+channel_eeg_1 = 1;
+channel_eeg_2 = 2;
+channel_ecg = 3;
+
 % End of paratmeter setting
 
 number_of_data = input('Number of data files: ');
@@ -79,7 +85,8 @@ for i = 1 : number_of_data
             % Calculate heart rate
             is_reversed = false;
             [heart_rate_minmax(i, :), heart_rate_std(i, :)] = ...
-                calc_heart_rate(data, t_index, is_reversed, number_of_scene);
+                calc_heart_rate(data, channel_ecg, ...
+                t_index, is_reversed, number_of_scene, sampling_rate);
             temp = input('1 for normal ecg, 2 for reversed ecg : ');
             if temp == 2
                 is_reversed = true;
@@ -87,12 +94,15 @@ for i = 1 : number_of_data
             
             if is_reversed == true
                 [heart_rate_minmax(i, :), heart_rate_std(i, :)] = ...
-                    calc_heart_rate(data, t_index, is_reversed, number_of_scene);
+                    calc_heart_rate(data, channel_ecg, ...
+                    t_index, is_reversed, number_of_scene, sampling_rate);
             end
 
             % Calculate power value
             [relative_power_value_1(i, :, :), relative_power_value_2(i, :, :)] = ...
-                calc_relative_power_value(data, sampling_rate, t_index);
+                calc_relative_power_value(data, ...
+                channel_eeg_1, channel_eeg_2, sampling_rate, t_index, ...
+                number_of_scene);
 
             % Calculate mean square error & heatmap data
             % 10s: Video start, 118s : Video end
@@ -105,9 +115,12 @@ for i = 1 : number_of_data
             [power_1_result, power_2_result, freq] = ...
                 generate_heatmap_data(data, sampling_rate, 0, 90, ...
                 t_index_start, t_index_end, ...
-                1, 2, number_of_time_frame, number_of_freq_frame);
+                channel_eeg_1, channel_eeg_2, ...
+                number_of_time_frame, number_of_freq_frame);
+
             heatmap_1 = heatmap_1 + power_1_result;
             heatmap_2 = heatmap_2 + power_2_result;
+
             [mse_entire_1(i,:), mse_entire_2(i,:)] = ...
                 calc_mean_square_error(power_1_result, power_2_result, ...
                 freq, time_info(1), time_info(10), false);
