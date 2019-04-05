@@ -128,7 +128,7 @@ If you have a problem for ECG analysis, you should modify parameter manually che
 + MinPeakDistance
   + Decide minimum distance to ignore peak near to R-wave.  
 
-If you use different video as stimulus or want to analysis in other frequency, you can modify variables for setting in `analysis.m` and `calc_mean_square_error.m`, following comments instruction at the top of the code.
+If you use different video as stimulus or want to analysis in other frequency, you can modify variables for setting in `analysis.m`, `calc_relative_power_value.m`, `generate_heatmap_data.m` and `calc_mean_square_error.m`, following comments instruction in the code.
 
 ## Related research
 
