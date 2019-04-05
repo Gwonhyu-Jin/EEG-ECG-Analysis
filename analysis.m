@@ -39,6 +39,10 @@ channel_eeg_1 = 1;
 channel_eeg_2 = 2;
 channel_ecg = 3;
 
+% Frequency setting
+freq_begin = 0;
+freq_end = 90;
+
 % End of paratmeter setting
 
 number_of_data = input('Number of data files: ');
@@ -113,7 +117,8 @@ for i = 1 : number_of_data
             t_index_end = t_s + time_frame_end;
 
             [power_1_result, power_2_result, freq] = ...
-                generate_heatmap_data(data, sampling_rate, 0, 90, ...
+                generate_heatmap_data(data, sampling_rate, ...
+                freq_begin, freq_end, ...
                 t_index_start, t_index_end, ...
                 channel_eeg_1, channel_eeg_2, ...
                 number_of_time_frame, number_of_freq_frame);
@@ -155,6 +160,9 @@ heatmap_1 = heatmap_1 ./ number_of_data;
 heatmap_2 = heatmap_2 ./ number_of_data;
 
 % Save result in Result.xlsx
+% If you want to change save format,
+% please modify this part
+
 disp('Saving Analysis Results (participants order is same as you typed)')
 % disp('Min-Max of Heart Rate');
 % disp(heart_rate_minmax);

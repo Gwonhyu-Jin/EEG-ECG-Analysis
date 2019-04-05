@@ -7,6 +7,7 @@ function [result_1, result_2, freq] = ...
 %       sampling_rate   Sampling rate of equipment 
 %       min_frq         Minimum value of EEG frequency bands range
 %       max_frq         Maximum value of EEG frequency bands range
+%       n               Determine point of fourier transform (n-point dft)
 %  Returns
 %       result_1        Power spectrum of channel 1 data
 %       reulst_2        Power spectrum of channel 2 data

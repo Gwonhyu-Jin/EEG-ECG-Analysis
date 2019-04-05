@@ -8,6 +8,7 @@ function [hr_diff, hr_std] = calc_heart_rate(data, data_index, ...
 %       t_index             Information for time of scenes
 %       is_reversed         True if reversed due to bad electrode attachment
 %       number_of_scene     Number of scene in video clip
+%       sampling_rate       Sampling rate of equipment
 %  Returns
 %       hr_diff             Difference of max and min value of heart rate
 %       hr_std              Standard deviation of heart rate
@@ -78,7 +79,7 @@ function [hr_diff, hr_std] = calc_heart_rate(data, data_index, ...
                 ylabel('Voltage(mV)');
                 title('Detrended Data');
 
-                bpm = 60000 ./ diff(locs_Rwave_detrend);
+                bpm = (60*sampling_rate) ./ diff(locs_Rwave_detrend);
                 hr_diff(n) = max(bpm) - min(bpm);
 
                 hr_std(n) = std(bpm);

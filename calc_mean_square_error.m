@@ -13,23 +13,25 @@ function [output_1, output_2] = calc_mean_square_error( ...
 %       output_1            Mean square error for EEG data (channel 1)
 %       output_2            Mean square error for EEG data (channel 2)
 
-	% Initialization
+    % Initialization
     clear power_1_int power_2_int;
     output_1 = zeros(1, 5);
     output_2 = zeros(1, 5);
-    t_begin = t_begin - 10;
-    t_end = t_end - 10;
-   
+
    	% If you use other experiment settings and other video stimulus,
 	% you should modify these parameters
 	% Start parameter setting
+    t_begin = t_begin - 10;     % Should subtract introduction part for 10s
+    t_end = t_end - 10;         % Should subtract introduction part for 10s
+   
     % alpha 8 ~ 13, beta 13 ~ 30, theta 4 ~ 8, delta 0.5 ~ 4, gamma 30 ~ 90
     freq_begin = 1 + [1,8,16,26,60];	% 0.5, 4, 8, 13, 30
     freq_end = 1 + [8,16,26,60,180];	% 4, 8, 13, 30, 90
     
     t_begin = t_begin * 4 + 1;		% Time resolution : 250ms
     t_end = t_end * 4;
-   
+    
+    % Should subtract introduction part for 10s
     start_stimulus = [28, 70, 108] - 10;
     end_stimulus = [66, 103, 118] - 10;
     % End parameter setting
@@ -40,9 +42,13 @@ function [output_1, output_2] = calc_mean_square_error( ...
         % 19s : L29 Start, 24s : L29 end
         % 28s : Bus Start, 66s : Bus end
         % 70s : Kakao Start, 103s : Kakao end
-        % 108s : Noise Start, 118s : Noise end        
-        t_begin = 1+4.*start_stimulus;
+        % 108s : Noise Start, 118s : Noise end
+        
+        % If you want to change time resolution
+        % You should modify this part
+        t_begin = 1+4.*start_stimulus;      % 250 sec per frame
         t_end = 4.*end_stimulus;
+        
         power_value_1 = [power_value_1(t_begin(1):t_end(1),:); ...
             power_value_1(t_begin(2):t_end(2),:); ...
             power_value_1(t_begin(3):t_end(3),:)];

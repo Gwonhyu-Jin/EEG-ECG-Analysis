@@ -8,7 +8,7 @@ function [result_1, result_2] ...
 %       channel_2               Index for EEG channel 2 data
 %       sampling_rate           Sampling rate of equipment
 %       t_index                 Time information for scenes
-%       number_of_scene     Number of scene in video clip
+%       number_of_scene         Number of scene in video clip
 %  Results
 %       relative_1              Relative power value for Channel 1 data
 %       relative_2              Relative power value for Channel 2 data
